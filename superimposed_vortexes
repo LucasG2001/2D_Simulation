@@ -1,0 +1,68 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define grid
+x = np.linspace(-10, 10, 40)
+y = np.linspace(-10, 10, 40)
+X, Y = np.meshgrid(x, y)
+
+# Define vorticity field parameters
+k = 1
+
+# Define centers for the two fields
+center1 = (0, 0)
+center2 = (5, 0)
+
+Y_hat = Y - center1[1]
+X_hat = X - center1[0]
+
+# Calculate vorticity field components for the first field
+Vx1 = np.sin(np.arctan2(Y_hat, X_hat)) * np.sqrt(np.square(X_hat) + np.square(Y_hat)) * 0.1
+Vy1 = -np.cos(np.arctan2(Y_hat, X_hat)) * np.sqrt(np.square(X_hat) + np.square(Y_hat)) * 0.1
+
+# set nre coordinate center
+Y_hat = Y - center2[1]
+X_hat = X - center2[0]
+# Calculate vorticity field components for the second field
+Vx2 = -np.sin(np.arctan2(Y_hat, X_hat)) * np.sqrt(np.square(X_hat) + np.square(Y_hat)) * 0.1
+Vy2 = np.cos(np.arctan2(Y_hat, X_hat)) * np.sqrt(np.square(X_hat) + np.square(Y_hat)) * 0.1
+
+# Calculate the combined vorticity field components
+Vx_combined = Vx1 + Vx2
+Vy_combined = Vy1 + Vy2
+
+# Plotting
+plt.figure(figsize=(12, 6))
+
+# Plotting the first vorticity field
+plt.subplot(1, 3, 1)
+plt.quiver(X, Y, Vx1, Vy1, color='b', scale=20, label='Field 1')
+plt.title('Vorticity Field 1')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.grid(True)
+plt.gca().set_aspect('equal', adjustable='box')
+plt.legend()
+
+# Plotting the second vorticity field
+plt.subplot(1, 3, 2)
+plt.quiver(X, Y, Vx2, Vy2, color='r', scale=20, label='Field 2')
+plt.title('Vorticity Field 2')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.grid(True)
+plt.gca().set_aspect('equal', adjustable='box')
+plt.legend()
+
+# Plotting the combined vorticity fields
+plt.figure()
+plt.quiver(X, Y, Vx_combined, Vy_combined, color='g', scale=20, label='Combined Field')
+plt.title('Superimposed Vorticity Fields')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.grid(True)
+plt.gca().set_aspect('equal', adjustable='box')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
